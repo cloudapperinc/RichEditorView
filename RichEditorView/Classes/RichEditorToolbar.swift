@@ -22,6 +22,10 @@ import UIKit
 
     /// Called when the Insert Link toolbar item is pressed.
     @objc optional func richEditorToolbarInsertLink(_ toolbar: RichEditorToolbar)
+    
+    
+    @objc optional func richEditorToolbarSaveClicked(_ toolbar: RichEditorToolbar)
+
 }
 
 /// RichBarButtonItem is a subclass of UIBarButtonItem that takes a callback as opposed to the target-action pattern
@@ -70,12 +74,152 @@ import UIKit
     }
 
     private var toolbarScroll: UIScrollView
-    private var toolbar: UIToolbar
+    private var defautToolbar: UIToolbar
     private var backgroundToolbar: UIToolbar
+    
+    public var searchBar = UISearchBar()
+    public var searchBarImg = UISearchBar()
+
+    lazy var headlineToolbar: UIToolbar = {
+    let bar = UIToolbar(frame: CGRect(x: 0, y:0, width: bounds.width, height: 44))
+    var buttons = [UIBarButtonItem]()
+    let opt = RichEditorHeadingOption.all
+    let headLineBar = createToolBar(bar: bar,options: opt)
+    return headLineBar
+    }()
+    
+    func createLinkBar(_ option: RichEditorDefaultOption, searchBar: UISearchBar) -> UIToolbar {
+        let bar = UIToolbar(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: bounds.width, height: 44)))
+        bar.isHidden = true
+        bar.alpha = 0
+        
+        let options =  [RichEditorDefaultOption.back, option]
+        var buttons: [RichBarButtonItem] = []
+
+        for opt in options {
+            let handler = { [weak self] in
+                if let strongSelf = self {
+                    opt.action(strongSelf)
+                }
+            }
+            if let image = opt.image {
+                buttons.append(RichBarButtonItem(image: image, handler: handler))
+            } else {
+                let title = opt.title
+                buttons.append(RichBarButtonItem(title: title, handler: handler))
+            }
+        }
+        
+         
+        let negativeSeperator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        negativeSeperator.width = 12
+        searchBar.frame = CGRect(x: 0, y:0, width: bounds.width - 90, height: 44)
+        searchBar.barTintColor = .lightGray
+        searchBar.setImage(UIImage(), for: .search, state: .normal)
+        searchBar.placeholder = "paste a link e.g., https://www.wikipedia.org"
+        let searchBarButton = UIBarButtonItem.init(customView: searchBar)
+        bar.items = [buttons[0],searchBarButton,negativeSeperator,buttons[1]]
+        toolbarScroll.addSubview(bar)
+       return bar
+    }
+    
+    lazy var linkToolbar: UIToolbar = {
+        createLinkBar(RichEditorDefaultOption.pasteLink, searchBar: searchBar)
+    }()
+  
+    lazy var ImgLinkToolbar: UIToolbar = {
+        createLinkBar(RichEditorDefaultOption.pasteImage, searchBar: searchBarImg)
+    }()
+    
+    lazy var fontToolbar: UIToolbar = {
+       let f = CGRect(origin:  CGPoint.zero, size: CGSize(width: 820, height: 44))
+       let bar = UIToolbar(frame:f)
+       var buttons = [UIBarButtonItem]()
+       let opt = RichEditorFontOption.all
+       let fontBar = createToolBar(bar: bar,options: opt)
+       return fontBar
+    }()
+    
+    
+    lazy var allignmentToolbar: UIToolbar = {
+       let f = CGRect(origin: CGPoint.zero, size: CGSize(width: bounds.width, height: 44))
+       let bar = UIToolbar(frame: f)
+       var buttons = [UIBarButtonItem]()
+       let opt = RichEditorAllignmentOption.all
+       let alignBar = createToolBar(bar: bar,options: opt)
+       return alignBar
+    }()
+    
+    lazy var sizeToolbar: UIToolbar = {
+        
+        var width:CGFloat = 400
+        if bounds.width > 400 {
+            width = bounds.width
+        }
+
+       let bar = UIToolbar(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: 44)))
+       var buttons = [UIBarButtonItem]()
+       let opt = RichEditorTextSizeOption.all
+       let fontBar = createToolBar(bar: bar,options: opt)
+       return fontBar
+    }()
+    
+    
+    func createToolBar(bar: UIToolbar,options: [RichEditorOption]) -> UIToolbar {
+        bar.isHidden = true
+        bar.autoresizingMask = .flexibleWidth
+        bar.alpha = 0
+        var buttons = [UIBarButtonItem]()
+        for option in options {
+            let handler = { [weak self] in
+                if let strongSelf = self {
+                    option.action(strongSelf)
+                }
+            }
+            if let image = option.image {
+                let button = RichBarButtonItem(image: image, handler: handler)
+                buttons.append(button)
+            } else {
+                let title = option.title
+                let button = RichBarButtonItem(title: title, handler: handler)
+                buttons.append(button)
+            }
+        }
+        bar.items = buttons
+        toolbarScroll.addSubview(bar)
+        bar.frame.origin = defautToolbar.frame.origin
+       return bar
+    }
+    
+    public func resetBars() {
+        let bars = [sizeToolbar,allignmentToolbar,fontToolbar,headlineToolbar, linkToolbar, ImgLinkToolbar]
+        bars.forEach({
+            $0.isHidden = true
+            $0.alpha = 0
+        })
+        defautToolbar.isHidden = false
+        toolbarScroll.contentSize.width = 880
+        toolbarScroll.setContentOffset(.zero, animated: true)
+    }
+     
+    func toggleBars(bar: UIToolbar?) {
+        guard let bar = bar else {return}
+        toolbarScroll.setContentOffset(.zero, animated: true)
+             if bar.isHidden {
+                bar.alpha = 1
+                toolbarScroll.contentSize.width = bar.bounds.size.width
+            } else {
+                bar.alpha = 0
+                // this should be defautToolbar.frame.width, temp fix for bug:
+                toolbarScroll.contentSize.width = 880
+            }
+                bar.isHidden = !bar.isHidden
+                defautToolbar.isHidden = !bar.isHidden
+    }
     
     public override init(frame: CGRect) {
         toolbarScroll = UIScrollView()
-        toolbar = UIToolbar()
+        defautToolbar = UIToolbar()
         backgroundToolbar = UIToolbar()
         super.init(frame: frame)
         setup()
@@ -83,7 +227,7 @@ import UIKit
     
     public required init?(coder aDecoder: NSCoder) {
         toolbarScroll = UIScrollView()
-        toolbar = UIToolbar()
+        defautToolbar = UIToolbar()
         backgroundToolbar = UIToolbar()
         super.init(coder: aDecoder)
         setup()
@@ -96,10 +240,10 @@ import UIKit
         backgroundToolbar.frame = bounds
         backgroundToolbar.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 
-        toolbar.autoresizingMask = .flexibleWidth
-        toolbar.backgroundColor = .clear
-        toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        defautToolbar.autoresizingMask = .flexibleWidth
+        defautToolbar.backgroundColor = .clear
+        defautToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        defautToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
 
         toolbarScroll.frame = bounds
         toolbarScroll.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -107,7 +251,7 @@ import UIKit
         toolbarScroll.showsVerticalScrollIndicator = false
         toolbarScroll.backgroundColor = .clear
 
-        toolbarScroll.addSubview(toolbar)
+        toolbarScroll.addSubview(defautToolbar)
 
         addSubview(backgroundToolbar)
         addSubview(toolbarScroll)
@@ -132,10 +276,10 @@ import UIKit
                 buttons.append(button)
             }
         }
-        toolbar.items = buttons
+        defautToolbar.items = buttons
 
-        let defaultIconWidth: CGFloat = 28
-        let barButtonItemMargin: CGFloat = 11
+        let defaultIconWidth: CGFloat = 36
+        let barButtonItemMargin: CGFloat = 12
         let width: CGFloat = buttons.reduce(0) {sofar, new in
             if let view = new.value(forKey: "view") as? UIView {
                 return sofar + view.frame.size.width + barButtonItemMargin
@@ -145,11 +289,11 @@ import UIKit
         }
         
         if width < frame.size.width {
-            toolbar.frame.size.width = frame.size.width
+            defautToolbar.frame.size.width = frame.size.width
         } else {
-            toolbar.frame.size.width = width
+            defautToolbar.frame.size.width = width + 10 //padding
         }
-        toolbar.frame.size.height = 44
+        defautToolbar.frame.size.height = 44
         toolbarScroll.contentSize.width = width
     }
     
