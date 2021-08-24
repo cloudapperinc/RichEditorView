@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RichEditorView: cebe82c09dd84779c2a7d80df101e4e97bc02764
+  RichEditorView: b65ed577be11a3e05e0c0a2f2a09d5367d89f11b
 
 PODFILE CHECKSUM: 7a4df9933ce0390c2a1aa64e14fa39cd32734a0d
 
