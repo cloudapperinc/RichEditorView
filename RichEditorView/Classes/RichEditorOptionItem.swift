@@ -64,7 +64,7 @@ public enum RichEditorHeadingOption: RichEditorOption {
             case .back: name = "back"
         }
           let bundle = Bundle(for: RichEditorToolbar.self)
-          return UIImage(named: name, in: bundle, compatibleWith: nil)?.withAlignmentRectInsets(UIEdgeInsets(top: 3, left: 3, bottom: -7, right: -3))
+          return UIImage(named: name, in: bundle, compatibleWith: nil)?.withAlignmentRectInsets(UIEdgeInsets(top: 1, left: 3, bottom: -9, right: -3))
     }
     
     public var title: String  {
@@ -187,7 +187,7 @@ public enum RichEditorAllignmentOption: RichEditorOption {
         case .justify: name = "justify_full"
         }
         let bundle = Bundle(for: RichEditorToolbar.self)
-        return UIImage(named: name, in: bundle, compatibleWith: nil)?.withAlignmentRectInsets(UIEdgeInsets(top: 3, left: 3, bottom: -7, right: -3))
+        return UIImage(named: name, in: bundle, compatibleWith: nil)?.withAlignmentRectInsets(UIEdgeInsets(top: 1, left: 3, bottom: -9, right: -3))
     }
     
     public var title: String  {
@@ -284,7 +284,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         }
         
         let bundle = Bundle(for: RichEditorToolbar.self)
-        let img = UIImage(named: name, in: bundle, compatibleWith: nil)?.withAlignmentRectInsets(UIEdgeInsets(top: 3, left: 3, bottom: -7, right: -3))
+        let img = UIImage(named: name, in: bundle, compatibleWith: nil)?.withAlignmentRectInsets(UIEdgeInsets(top: 1, left: 3, bottom: -9, right: -3))
         return img
     }
     
