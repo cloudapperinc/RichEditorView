@@ -81,13 +81,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		28E56E4026D520A500F3BF72 /* icons */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = icons;
-			sourceTree = "<group>";
-		};
 		FBA6AAEF1AD3EC9F00721644 = {
 			isa = PBXGroup;
 			children = (
@@ -163,7 +156,6 @@
 			isa = PBXGroup;
 			children = (
 				28E8158326D51B0800B21D28 /* icons.xcassets */,
-				28E56E4026D520A500F3BF72 /* icons */,
 				FBA6AB171AD3ED2D00721644 /* editor */,
 			);
 			name = Assets;
