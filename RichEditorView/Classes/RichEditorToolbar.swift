@@ -113,7 +113,7 @@ import UIKit
          
         let negativeSeperator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         negativeSeperator.width = 12
-        searchBar.frame = CGRect(x: 0, y:0, width: bounds.width - 90, height: 44)
+        searchBar.frame = CGRect(x: 0, y:0, width: bounds.width - 110, height: 44)
         searchBar.barTintColor = .lightGray
         searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchBar.placeholder = "paste a link e.g., https://www.wikipedia.org"
