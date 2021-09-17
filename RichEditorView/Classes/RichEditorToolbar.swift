@@ -51,6 +51,8 @@ import UIKit
     }
 }
 
+public class RTE_SearchBar: UISearchBar { }
+
 /// RichEditorToolbar is UIView that contains the toolbar for actions that can be performed on a RichEditorView
 @objcMembers open class RichEditorToolbar: UIView {
 
@@ -77,8 +79,8 @@ import UIKit
     private var defautToolbar: UIToolbar
     private var backgroundToolbar: UIToolbar
     
-    public var searchBar = UISearchBar()
-    public var searchBarImg = UISearchBar()
+    public var searchBar = RTE_SearchBar()
+    public var searchBarImg = RTE_SearchBar()
 
     lazy var headlineToolbar: UIToolbar = {
     let bar = UIToolbar(frame: CGRect(x: 0, y:0, width: bounds.width, height: 44))
