@@ -200,6 +200,10 @@ import UIKit
         defautToolbar.isHidden = false
         toolbarScroll.contentSize.width = 1050
         toolbarScroll.setContentOffset(.zero, animated: true)
+        searchBar.resignFirstResponder()
+        searchBar.text = nil
+        searchBarImg.resignFirstResponder()
+        searchBarImg.text = nil
     }
      
     func toggleBars(bar: UIToolbar?) {
