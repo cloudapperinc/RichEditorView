@@ -313,6 +313,12 @@ RE.insertLink = function(url, title) {
             sel.removeAllRanges();
             sel.addRange(range);
         }
+    } else {
+        var el = document.createElement("a");
+        el.setAttribute("href", url);
+        el.innerHTML = url;
+        var range = sel.getRangeAt(0);
+        range.insertNode(el);
     }
     RE.callback("input");
 };
