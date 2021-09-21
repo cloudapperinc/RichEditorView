@@ -319,6 +319,8 @@ RE.insertLink = function(url, title) {
         el.innerHTML = url;
         var range = sel.getRangeAt(0);
         range.insertNode(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
     }
     RE.callback("input");
 };
