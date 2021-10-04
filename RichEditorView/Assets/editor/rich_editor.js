@@ -176,14 +176,6 @@ RE.redo = function() {
     document.execCommand('redo', false, null);
 };
 
-RE.setCode = function() {
-    if(window.getSelection().toString() != "") {
-        var code = window.getSelection().toString().replace(/</ig, '&lt;').replace(/>/ig, '&gt;');
-        var html ='<div class="w3-panel w3-card w3-light-grey"><div class="w3-code htmlHigh notranslate">'+code+'</div></div></br>'
-    }
-    RE.insertHTML(html);
-}
-
 RE.setBold = function() {
     document.execCommand('bold', false, null);
 };
@@ -279,7 +271,7 @@ RE.insertImage = function(url, alt) {
 RE.setCode = function() {
     if(window.getSelection().toString() != "") {
         var code = window.getSelection().toString().replace(/</ig, '&lt;').replace(/>/ig, '&gt;');
-        var html ='<div style="background-color: lightgray; width: 100%; text-align:left; padding: 12px;"><p><code style="color: #001853; ">' + code +'</code></p></div>'
+        var html ='<div style="background-color: lightgray; width: 100%; text-align:left; padding: 12px;"><p><code style="color: #001853; ">' + code +'</code></p></div></br>'
     }
     RE.insertHTML(html);
 }
