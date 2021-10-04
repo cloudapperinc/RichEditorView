@@ -263,7 +263,7 @@ RE.insertImage = function(url, alt) {
     img.setAttribute("src", url);
     img.setAttribute("alt", alt);
     img.onload = RE.updateHeight;
-
+    RE.focus();
     RE.insertHTML(img.outerHTML);
     RE.callback("input");
 };
