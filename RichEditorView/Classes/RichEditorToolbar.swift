@@ -25,6 +25,8 @@ import UIKit
     
     
     @objc optional func richEditorToolbarSaveClicked(_ toolbar: RichEditorToolbar)
+    
+    @objc optional func richEditorToolbarInsertFromGallery(_ toolbar: RichEditorToolbar)
 
 }
 
@@ -200,7 +202,7 @@ public class RTE_SearchBar: UISearchBar { }
             $0.alpha = 0
         })
         defautToolbar.isHidden = false
-        toolbarScroll.contentSize.width = 1050
+        toolbarScroll.contentSize.width = 1100
         toolbarScroll.setContentOffset(.zero, animated: true)
         searchBar.resignFirstResponder()
         searchBar.text = nil
@@ -217,7 +219,7 @@ public class RTE_SearchBar: UISearchBar { }
             } else {
                 bar.alpha = 0
                 // this should be defautToolbar.frame.width, temp fix for bug:
-                toolbarScroll.contentSize.width = 1050
+                toolbarScroll.contentSize.width = 1100
             }
                 bar.isHidden = !bar.isHidden
                 defautToolbar.isHidden = !bar.isHidden
